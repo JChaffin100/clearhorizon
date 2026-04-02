@@ -90,7 +90,7 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
     try {
       const res  = await fetch(RAINVIEWER_API);
       const data = await res.json();
-      const past     = data.radar?.past    ?? [];
+      const past     = data.radar?.past?.slice(-6) ?? [];
       const nowcast  = data.radar?.nowcast ?? [];
       const allFrames = [...past, ...nowcast];
 
@@ -103,7 +103,7 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
         return L.tileLayer(tileUrl, {
           opacity: 0,
           zIndex:  10,
-        }).addTo(map);
+        });
       });
 
       layersRef.current = layers;
@@ -111,6 +111,7 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
 
       // Show first frame
       if (layers.length > 0) {
+        layers[0].addTo(map);
         layers[0].setOpacity(0.7);
         frameIdxRef.current = 0;
         setFrameIndex(0);
@@ -126,8 +127,21 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
     intervalRef.current = setInterval(() => {
       const curr = frameIdxRef.current;
       const next = (curr + 1) % total;
+
+      // Add the next layer to the map so Leaflet can fetch its tiles
+      if (!leafletMap.current.hasLayer(layers[next])) {
+        layers[next].addTo(leafletMap.current);
+      }
+
       layers[curr]?.setOpacity(0);
       layers[next]?.setOpacity(0.7);
+
+      // Remove the previously shown layer from the map so zooming doesn't trigger fetching for it
+      const prev = (curr - 1 + total) % total;
+      if (prev !== next && leafletMap.current.hasLayer(layers[prev])) {
+        leafletMap.current.removeLayer(layers[prev]);
+      }
+
       frameIdxRef.current = next;
       setFrameIndex(next);
     }, ANIMATION_INTERVAL);
@@ -152,7 +166,18 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
   const jumpToFrame = useCallback((idx) => {
     const layers = layersRef.current;
     if (!layers.length) return;
+
+    if (!leafletMap.current.hasLayer(layers[idx])) {
+      layers[idx].addTo(leafletMap.current);
+    }
+
     layers[frameIdxRef.current]?.setOpacity(0);
+
+    // If jumping, let's also remove the current layer from map to free memory (unless it's the one we jumped to)
+    if (frameIdxRef.current !== idx && leafletMap.current.hasLayer(layers[frameIdxRef.current])) {
+      leafletMap.current.removeLayer(layers[frameIdxRef.current]);
+    }
+
     layers[idx]?.setOpacity(0.7);
     frameIdxRef.current = idx;
     setFrameIndex(idx);

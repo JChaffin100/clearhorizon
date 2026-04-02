@@ -67,7 +67,9 @@ export function formatUpdated(date) {
  */
 export function getCurrentHourIndex(weather) {
   if (!weather?.current?.time || !weather?.hourly?.time) return 0;
-  const idx = weather.hourly.time.indexOf(weather.current.time);
+  // Truncate current time to top of the hour: "2024-04-02T15:45" -> "2024-04-02T15:00"
+  const currentHourStr = weather.current.time.slice(0, 13) + ":00";
+  const idx = weather.hourly.time.indexOf(currentHourStr);
   return idx >= 0 ? idx : 0;
 }
 
