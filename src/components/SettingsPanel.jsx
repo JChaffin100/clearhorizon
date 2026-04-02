@@ -156,20 +156,34 @@ export default function SettingsPanel({
   }, [onRefreshWeather]);
 
   const handleCheckUpdate = useCallback(async () => {
-    if (!navigator.serviceWorker?.ready) {
-      showToast('Service worker not available');
-      return;
+    showToast('Checking for updates…');
+
+    try {
+      // 1. Manually wipe out all PWA CacheStorage to guarantee fresh assets
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map((name) => caches.delete(name)));
+      }
+
+      // 2. Force service worker to fetch the newly available script
+      if (navigator.serviceWorker) {
+        const reg = await navigator.serviceWorker.ready;
+        if (reg) {
+          await reg.update();
+        }
+      }
+
+      showToast('Update pulled successfully — reloading…');
+      
+      // 3. Reload cleanly so everything comes from the network
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (err) {
+      console.error('Update check failed:', err);
+      showToast('Error pulling update. Please try again.');
     }
-    const reg = await navigator.serviceWorker.ready;
-    await reg.update();
-    if (reg.waiting) {
-      showToast('Update found — reloading…');
-      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-      setTimeout(() => window.location.reload(), 1200);
-    } else {
-      showToast(`You're on the latest version (v${version ?? '…'})`);
-    }
-  }, [version]);
+  }, []);
 
   if (!open) return null;
 
