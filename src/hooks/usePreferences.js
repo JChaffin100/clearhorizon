@@ -7,7 +7,7 @@ export const DEFAULT_PREFS = {
   version: '1.0',
   units: 'imperial',
   theme: 'system',
-  radarDefaultZoom: 9,
+  radarDefaultZoom: 5,
   savedCities: [],
   activeLocationIndex: -1,
 };
@@ -16,7 +16,13 @@ function loadPrefs() {
   try {
     const raw = localStorage.getItem(PREFS_KEY);
     if (!raw) return { ...DEFAULT_PREFS };
-    return { ...DEFAULT_PREFS, ...JSON.parse(raw) };
+    const p = { ...DEFAULT_PREFS, ...JSON.parse(raw) };
+    // Automatically migrate users from the old default (9) down to 5 to prevent coverage errors
+    if (p.radarDefaultZoom === 9 && !p._zoomFix5) {
+      p.radarDefaultZoom = 5;
+      p._zoomFix5 = true;
+    }
+    return p;
   } catch {
     return { ...DEFAULT_PREFS };
   }

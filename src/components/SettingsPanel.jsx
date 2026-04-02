@@ -79,7 +79,7 @@ function parsePrefsCSV(text) {
 }
 
 const ZOOM_LABELS = {
-  6: 'State', 7: 'Regional', 8: 'County', 9: '50-mile radius',
+  4: 'Continent', 5: 'Country', 6: 'State', 7: 'Regional', 8: 'County', 9: '50-mile radius',
   10: 'City', 11: 'District', 12: 'Neighborhood', 13: 'Street',
 };
 
@@ -288,7 +288,7 @@ export default function SettingsPanel({
               </div>
               <input
                 type="range"
-                min="6"
+                min="4"
                 max="13"
                 value={prefs.radarDefaultZoom}
                 onChange={(e) => updatePrefs({ radarDefaultZoom: parseInt(e.target.value, 10) })}
@@ -297,7 +297,7 @@ export default function SettingsPanel({
                 aria-valuetext={ZOOM_LABELS[prefs.radarDefaultZoom]}
               />
               <div className="settings-slider__labels">
-                <span>State</span>
+                <span>Continent</span>
                 <span>Street</span>
               </div>
             </div>

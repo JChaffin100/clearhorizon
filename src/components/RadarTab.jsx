@@ -2,10 +2,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import 'leaflet/dist/leaflet.css';
 
 const RAINVIEWER_API = 'https://api.rainviewer.com/public/weather-maps.json';
-const CARTO_TILES    = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const CARTO_TILES    = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 const CARTO_ATTR     = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
-const ANIMATION_INTERVAL = 500; // ms per frame
+const ANIMATION_INTERVAL = 1000; // ms per frame
 
 export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActive, onRefresh }) {
   const mapRef       = useRef(null);

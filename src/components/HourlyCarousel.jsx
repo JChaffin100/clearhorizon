@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import WeatherIcon from './WeatherIcon.jsx';
 import { getWeatherInfo } from '../utils/weatherCodes.js';
 import { formatHour, getHourlyForDay, getCurrentHourIndex } from '../utils/timeUtils.js';
@@ -9,10 +10,23 @@ export default function HourlyCarousel({ weather, selectedDayIndex = 0 }) {
   const hourly     = getHourlyForDay(weather, selectedDayIndex);
   const isToday    = selectedDayIndex === 0;
   const nowIndex   = isToday ? (getCurrentHourIndex(weather) % 24) : -1;
+  const trackRef   = useRef(null);
+
+  useEffect(() => {
+    if (nowIndex >= 0 && trackRef.current) {
+      // Use setTimeout to ensure DOM is fully rendered
+      setTimeout(() => {
+        const activeCard = trackRef.current.querySelector('.hourly-card--now');
+        if (activeCard) {
+          activeCard.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }, 50);
+    }
+  }, [nowIndex, selectedDayIndex]);
 
   return (
     <section className="hourly-carousel" aria-label="Hourly forecast">
-      <div className="hourly-carousel__track" role="list">
+      <div className="hourly-carousel__track" role="list" ref={trackRef}>
         {hourly.time?.map((time, i) => {
           const code   = hourly.weather_code?.[i] ?? 0;
           const isDay  = 1; // hourly doesn't have is_day; approximate by hour
