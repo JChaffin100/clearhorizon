@@ -80,7 +80,7 @@ export default function App() {
         {/* ── FORECAST TAB ── */}
         <div
           className={`forecast-view${activeTab === 'forecast' ? ' forecast-view--active' : ''}`}
-          aria-hidden={activeTab !== 'forecast'}
+          inert={activeTab !== 'forecast' ? "" : undefined}
         >
           {noLocation ? (
             <div className="no-location-screen">
@@ -149,7 +149,7 @@ export default function App() {
         {/* ── RADAR TAB ── */}
         <div
           className={`radar-view${activeTab === 'radar' ? ' radar-view--active' : ''}`}
-          aria-hidden={activeTab !== 'radar'}
+          inert={activeTab !== 'radar' ? "" : undefined}
         >
           <RadarTab
             coords={activeCoords}
@@ -157,6 +157,7 @@ export default function App() {
             defaultZoom={prefs.radarDefaultZoom}
             isActive={activeTab === 'radar'}
             onRefresh={refresh}
+            onSettingsClick={() => setSettingsOpen(true)}
           />
         </div>
       </main>
