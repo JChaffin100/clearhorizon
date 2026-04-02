@@ -1,0 +1,71 @@
+<svg width="100%" viewBox="0 0 400 410" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <clipPath id="roundedSquare">
+    <rect x="0" y="0" width="400" height="400" rx="80"/>
+  </clipPath>
+  <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0d2b6e"/>
+    <stop offset="45%" stop-color="#1a5fb8"/>
+    <stop offset="72%" stop-color="#3a9dd8"/>
+    <stop offset="88%" stop-color="#f4a03a"/>
+    <stop offset="100%" stop-color="#e8612a"/>
+  </linearGradient>
+  <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#1a3a1a"/>
+    <stop offset="100%" stop-color="#0d200d"/>
+  </linearGradient>
+  <linearGradient id="sunGlow" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ffd966" stop-opacity="1"/>
+    <stop offset="100%" stop-color="#ffaa00" stop-opacity="1"/>
+  </linearGradient>
+  <linearGradient id="glowFade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#f4a03a" stop-opacity="0.6"/>
+    <stop offset="100%" stop-color="#e8612a" stop-opacity="0"/>
+  </linearGradient>
+</defs>
+
+<g clip-path="url(#roundedSquare)" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+
+  <!-- Sky background -->
+  <rect x="0" y="0" width="400" height="400" fill="url(#skyGrad)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Sun glow ellipse on horizon -->
+  <ellipse cx="200" cy="252" rx="130" ry="48" fill="url(#glowFade)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Sun — sitting right on the horizon line -->
+  <circle cx="200" cy="252" r="36" fill="url(#sunGlow)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Sun inner highlight -->
+  <circle cx="200" cy="244" r="18" fill="#fff5cc" opacity="0.45" style="fill:rgb(255, 245, 204);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Horizon line -->
+  <rect x="0" y="248" width="400" height="4" fill="#ffffff" opacity="0.18" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.18;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Ground / land mass -->
+  <rect x="0" y="252" width="400" height="148" fill="url(#groundGrad)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Subtle rolling hills silhouette -->
+  <path d="M0 252 Q60 236 120 248 Q180 260 240 244 Q300 228 360 244 Q380 248 400 246 L400 252 Z" fill="#122a12" opacity="0.7" style="fill:rgb(18, 42, 18);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cloud left — large fluffy -->
+  <ellipse cx="98" cy="148" rx="58" ry="26" fill="white" opacity="0.92" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.92;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="72" cy="158" rx="38" ry="20" fill="white" opacity="0.88" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.88;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="130" cy="158" rx="42" ry="20" fill="white" opacity="0.88" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.88;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="98" cy="164" rx="62" ry="18" fill="white" opacity="0.95" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.95;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cloud right — smaller -->
+  <ellipse cx="296" cy="108" rx="44" ry="20" fill="white" opacity="0.80" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.8;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="274" cy="116" rx="28" ry="16" fill="white" opacity="0.75" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.75;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="318" cy="116" rx="32" ry="16" fill="white" opacity="0.75" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.75;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="296" cy="122" rx="46" ry="14" fill="white" opacity="0.82" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.82;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Horizon sun rays — subtle streaks -->
+  <line x1="200" y1="252" x2="20" y2="210" stroke="#ffd966" stroke-width="1.2" opacity="0.18" style="fill:rgb(0, 0, 0);stroke:rgb(255, 217, 102);color:rgb(0, 0, 0);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.18;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <line x1="200" y1="252" x2="60" y2="200" stroke="#ffd966" stroke-width="1.2" opacity="0.15" style="fill:rgb(0, 0, 0);stroke:rgb(255, 217, 102);color:rgb(0, 0, 0);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.15;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <line x1="200" y1="252" x2="380" y2="210" stroke="#ffd966" stroke-width="1.2" opacity="0.18" style="fill:rgb(0, 0, 0);stroke:rgb(255, 217, 102);color:rgb(0, 0, 0);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.18;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <line x1="200" y1="252" x2="340" y2="200" stroke="#ffd966" stroke-width="1.2" opacity="0.15" style="fill:rgb(0, 0, 0);stroke:rgb(255, 217, 102);color:rgb(0, 0, 0);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.15;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- "ClearHorizon" wordmark at bottom -->
+  <text x="200" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="800" letter-spacing="0.5" fill="white" opacity="0.92" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.92;font-family:system-ui, -apple-system, sans-serif;font-size:26px;font-weight:800;text-anchor:middle;dominant-baseline:auto">ClearHorizon</text>
+
+</g>
+</svg>

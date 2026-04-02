@@ -1,0 +1,21 @@
+{
+  "name": "ClearHorizon",
+  "short_name": "ClearHorizon",
+  "description": "Clean, lightweight personal weather with radar",
+  "start_url": "/clearhorizon/",
+  "scope": "/clearhorizon/",
+  "display": "standalone",
+  "background_color": "#0d2b6e",
+  "theme_color": "#1a5fb8",
+  "orientation": "any",
+  "icons": [
+    { "src": "/clearhorizon/icons/icon-72.png",  "sizes": "72x72",   "type": "image/png" },
+    { "src": "/clearhorizon/icons/icon-96.png",  "sizes": "96x96",   "type": "image/png" },
+    { "src": "/clearhorizon/icons/icon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/clearhorizon/icons/icon-144.png", "sizes": "144x144", "type": "image/png" },
+    { "src": "/clearhorizon/icons/icon-152.png", "sizes": "152x152", "type": "image/png" },
+    { "src": "/clearhorizon/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/clearhorizon/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/clearhorizon/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
