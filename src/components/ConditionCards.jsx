@@ -1,4 +1,4 @@
-import { compassDir, formatPressure, formatVisibility, formatDewPoint, uvLabel, uvColor, aqiLabel, aqiColor, moonPhaseInfo, formatTempShort } from '../utils/unitUtils.js';
+import { compassDir, formatPressure, formatVisibility, formatDewPoint, uvLabel, uvColor, aqiLabel, aqiColor, formatTempShort } from '../utils/unitUtils.js';
 import { formatTime } from '../utils/timeUtils.js';
 
 function Card({ title, icon, children, className = '' }) {
@@ -22,8 +22,6 @@ export default function ConditionCards({ weather, aqi, units }) {
 
   const uv    = c.uv_index;
   const aqiVal = aqi?.current?.us_aqi;
-  const moonPhase = d?.moon_phase?.[0];
-  const { name: moonName, emoji: moonEmoji } = moonPhaseInfo(moonPhase);
 
   return (
     <section className="cond-cards" aria-label="Weather details">
@@ -115,13 +113,7 @@ export default function ConditionCards({ weather, aqi, units }) {
         </div>
       </Card>
 
-      {/* Moon Phase */}
-      <Card title="Moon Phase" icon={moonEmoji}>
-        <div className="cond-card__value" style={{ fontSize: '1.3rem' }}>
-          {moonEmoji}
-        </div>
-        <div className="cond-card__sub">{moonName}</div>
-      </Card>
+
 
       {/* Air Quality */}
       <Card title="Air Quality" icon="🌿">

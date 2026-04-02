@@ -156,6 +156,7 @@ export default function App() {
             savedCities={prefs.savedCities}
             defaultZoom={prefs.radarDefaultZoom}
             isActive={activeTab === 'radar'}
+            onRefresh={refresh}
           />
         </div>
       </main>

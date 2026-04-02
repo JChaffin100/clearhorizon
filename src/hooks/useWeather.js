@@ -4,7 +4,7 @@ const WEATHER_TTL = 30 * 60 * 1000; // 30 minutes (cache freshness)
 const AQI_TTL     = 60 * 60 * 1000; // 1 hour
 
 function cacheKey(prefix, lat, lon) {
-  return `${prefix}_${lat.toFixed(2)}_${lon.toFixed(2)}`;
+  return `${prefix}_${parseFloat(lat).toFixed(2)}_${parseFloat(lon).toFixed(2)}`;
 }
 
 function readCache(key) {
@@ -55,7 +55,7 @@ async function fetchWeatherData(lat, lon, units) {
     'apparent_temperature_max','apparent_temperature_min',
     'sunrise','sunset','precipitation_sum','precipitation_probability_max',
     'wind_speed_10m_max','wind_gusts_10m_max','uv_index_max',
-    'precipitation_hours','moonrise','moonset','moon_phase',
+    'precipitation_hours'
   ].join(','));
   url.searchParams.set('forecast_days',      '16');
   url.searchParams.set('timezone',           'auto');

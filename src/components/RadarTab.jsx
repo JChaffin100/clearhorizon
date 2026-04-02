@@ -7,7 +7,7 @@ const CARTO_ATTR     = '&copy; <a href="https://www.openstreetmap.org/copyright"
 
 const ANIMATION_INTERVAL = 500; // ms per frame
 
-export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActive }) {
+export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActive, onRefresh }) {
   const mapRef       = useRef(null);
   const leafletMap   = useRef(null);
   const layersRef    = useRef([]);
@@ -98,7 +98,8 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
 
       // Build a TileLayer for each frame (use path exactly as returned)
       const layers = allFrames.map((frame) => {
-        const tileUrl = `https://tilecache.rainviewer.com${frame.path}/256/{z}/{x}/{y}/2/1_1.png`;
+        const host = data.host || 'https://tilecache.rainviewer.com';
+        const tileUrl = `${host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`;
         return L.tileLayer(tileUrl, {
           opacity: 0,
           zIndex:  10,
@@ -165,6 +166,17 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
   const zoomIn  = useCallback(() => leafletMap.current?.zoomIn(), []);
   const zoomOut = useCallback(() => leafletMap.current?.zoomOut(), []);
 
+  const handleRefresh = useCallback(() => {
+    if (leafletMap.current) {
+      import('leaflet').then((L) => {
+        layersRef.current.forEach(layer => leafletMap.current.removeLayer(layer));
+        layersRef.current = [];
+        fetchRadarFrames(L, leafletMap.current);
+      });
+    }
+    onRefresh?.();
+  }, [onRefresh]);
+
   // Frame timestamp label
   function frameLabel(idx) {
     const frame = frames[idx];
@@ -196,13 +208,21 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
 
         {/* My Location — top right below zoom */}
         <div className="radar-controls__locate">
-          <button className="radar-btn" onClick={recenter} aria-label="Re-center on my location">
+          <button className="radar-btn" onClick={recenter} aria-label="Re-center on my location" style={{ marginBottom: '8px' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="3"/>
               <line x1="12" y1="2"  x2="12" y2="6"/>
               <line x1="12" y1="18" x2="12" y2="22"/>
               <line x1="2"  y1="12" x2="6"  y2="12"/>
               <line x1="18" y1="12" x2="22" y2="12"/>
+            </svg>
+          </button>
+          
+          {/* Refresh radar and weather */}
+          <button className="radar-btn" onClick={handleRefresh} aria-label="Refresh radar and weather" title="Refresh">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
             </svg>
           </button>
         </div>
