@@ -5,7 +5,7 @@ const RAINVIEWER_API = 'https://api.rainviewer.com/public/weather-maps.json';
 const CARTO_TILES    = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 const CARTO_ATTR     = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
-const ANIMATION_INTERVAL = 1500; // ms per frame
+const ANIMATION_INTERVAL = 500; // ms per frame
 
 export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActive, onRefresh }) {
   const mapRef       = useRef(null);
@@ -90,7 +90,7 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
     try {
       const res  = await fetch(RAINVIEWER_API);
       const data = await res.json();
-      const past     = data.radar?.past?.slice(-6) ?? [];
+      const past     = data.radar?.past ?? [];
       const nowcast  = data.radar?.nowcast ?? [];
       const allFrames = [...past, ...nowcast];
 
@@ -99,10 +99,12 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
       // Build a TileLayer for each frame (use path exactly as returned)
       const layers = allFrames.map((frame) => {
         const host = data.host || 'https://tilecache.rainviewer.com';
-        const tileUrl = `${host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`;
+        const tileUrl = `${host}${frame.path}/512/{z}/{x}/{y}/2/1_1.png`;
         return L.tileLayer(tileUrl, {
           opacity: 0,
           zIndex:  10,
+          tileSize: 512,
+          zoomOffset: -1,
           updateWhenZooming: false,
           keepBuffer: 0,
           maxNativeZoom: 8,
