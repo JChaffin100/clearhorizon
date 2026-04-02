@@ -105,6 +105,8 @@ export default function RadarTab({ coords, savedCities, defaultZoom = 9, isActiv
           zIndex:  10,
           updateWhenZooming: false,
           keepBuffer: 0,
+          maxNativeZoom: 8,
+          maxZoom: 18,
         });
       });
 

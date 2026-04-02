@@ -5,12 +5,11 @@ import { formatHour, getHourlyForDay, getCurrentHourIndex } from '../utils/timeU
 import { formatTempShort } from '../utils/unitUtils.js';
 
 export default function HourlyCarousel({ weather, selectedDayIndex = 0 }) {
-  if (!weather?.hourly) return null;
+  const trackRef   = useRef(null);
 
-  const hourly     = getHourlyForDay(weather, selectedDayIndex);
   const isToday    = selectedDayIndex === 0;
   const nowIndex   = isToday ? (getCurrentHourIndex(weather) % 24) : -1;
-  const trackRef   = useRef(null);
+  const hourly     = weather?.hourly ? getHourlyForDay(weather, selectedDayIndex) : null;
 
   useEffect(() => {
     if (nowIndex >= 0 && trackRef.current) {
@@ -23,6 +22,8 @@ export default function HourlyCarousel({ weather, selectedDayIndex = 0 }) {
       }, 50);
     }
   }, [nowIndex, selectedDayIndex]);
+
+  if (!weather?.hourly || !hourly) return null;
 
   return (
     <section className="hourly-carousel" aria-label="Hourly forecast">
