@@ -22,27 +22,37 @@ function exportPrefs(prefs) {
     .map((c) => `${[c.name, c.admin1, c.country].filter(Boolean).join(' ')}|${c.latitude}|${c.longitude}|${c.timezone}`)
     .join(',');
 
-  const rows = [
+  const content = [
     'setting,value',
     `version,${prefs.version}`,
     `units,${prefs.units}`,
     `theme,${prefs.theme}`,
     `radarDefaultZoom,${prefs.radarDefaultZoom}`,
     `savedCities,"${cities}"`,
-  ].join('\n');
+  ].join('\r\n');
 
-  const blob = new Blob([rows], { type: 'text/csv' });
+  // Add UTF-8 BOM for Excel/Windows compatibility
+  const blob = new Blob(['\uFEFF', content], { type: 'text/csv;charset=utf-8' });
   const url  = URL.createObjectURL(blob);
   const a    = Object.assign(document.createElement('a'), {
     href: url, download: 'clearhorizon-preferences.csv',
   });
+
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+
+  // Small delay before revoking to ensure the browser captures the download
+  setTimeout(() => URL.revokeObjectURL(url), 100);
 }
 
 // --- CSV import ---
 function parsePrefsCSV(text) {
-  const lines = text.trim().split('\n');
+  // Strip UTF-8 BOM if present (added by some exporters/Excel)
+  const cleanText = text.startsWith('\uFEFF') ? text.slice(1) : text;
+
+  // Split by line, handling both \n and \r\n
+  const lines = cleanText.trim().split(/\r?\n/);
   if (lines[0].trim() !== 'setting,value') throw new Error('Invalid file format');
   const map = {};
   for (let i = 1; i < lines.length; i++) {
