@@ -18,20 +18,32 @@ async function getSWVersion() {
 
 // --- CSV export ---
 function exportPrefs(prefs) {
+  // Helper to escape CSV values (wrap in quotes if contains comma/quote/newline, escape internal quotes)
+  const esc = (val) => {
+    const str = String(val ?? '');
+    if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+      return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
+  };
+
   const cities = prefs.savedCities
     .map((c) => `${[c.name, c.admin1, c.country].filter(Boolean).join(' ')}|${c.latitude}|${c.longitude}|${c.timezone}`)
     .join(',');
 
-  const content = [
-    'setting,value',
-    `version,${prefs.version}`,
-    `units,${prefs.units}`,
-    `theme,${prefs.theme}`,
-    `radarDefaultZoom,${prefs.radarDefaultZoom}`,
-    `savedCities,"${cities}"`,
-  ].join('\r\n');
+  const rows = [
+    ['setting', 'value'],
+    ['version', prefs.version],
+    ['units', prefs.units],
+    ['theme', prefs.theme],
+    ['radarDefaultZoom', prefs.radarDefaultZoom],
+    ['savedCities', cities],
+  ];
 
-  // Add UTF-8 BOM for Excel/Windows compatibility
+  // Build CSV with escaped values and Windows line endings (\r\n)
+  const content = rows.map(row => row.map(esc).join(',')).join('\r\n');
+
+  // Add UTF-8 BOM (\uFEFF) for Excel/Windows compatibility
   const blob = new Blob(['\uFEFF', content], { type: 'text/csv;charset=utf-8' });
   const url  = URL.createObjectURL(blob);
   const a    = Object.assign(document.createElement('a'), {
@@ -40,27 +52,62 @@ function exportPrefs(prefs) {
 
   document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
-
-  // Small delay before revoking to ensure the browser captures the download
-  setTimeout(() => URL.revokeObjectURL(url), 100);
+  
+  // 1-second delay before revoking to ensure the download finishes handoff
+  setTimeout(() => {
+    if (document.body.contains(a)) {
+      document.body.removeChild(a);
+    }
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 // --- CSV import ---
 function parsePrefsCSV(text) {
-  // Strip UTF-8 BOM if present (added by some exporters/Excel)
-  const cleanText = text.startsWith('\uFEFF') ? text.slice(1) : text;
+  // Strip UTF-8 BOM if present
+  const cleanText = text.replace(/^\uFEFF/, '');
 
   // Split by line, handling both \n and \r\n
-  const lines = cleanText.trim().split(/\r?\n/);
-  if (lines[0].trim() !== 'setting,value') throw new Error('Invalid file format');
+  const lines = cleanText.split(/\r?\n/);
+  
+  // Basic RFC 4180 CSV line parser
+  const parseLine = (line) => {
+    const parts = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          current += '"';
+          i++; // skip next quote
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        parts.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    parts.push(current);
+    return parts.map(p => p.trim());
+  };
+
+  const rows = lines.filter(l => l.trim()).map(parseLine);
+  if (rows.length < 1) throw new Error('Invalid file');
+
+  // Relaxed header check
+  const header = rows[0];
+  if (header[0]?.toLowerCase() !== 'setting' || header[1]?.toLowerCase() !== 'value') {
+    throw new Error('Invalid format: missing "setting,value" header');
+  }
+
   const map = {};
-  for (let i = 1; i < lines.length; i++) {
-    const comma = lines[i].indexOf(',');
-    if (comma < 0) continue;
-    const key = lines[i].slice(0, comma).trim();
-    let val   = lines[i].slice(comma + 1).trim().replace(/^"|"$/g, '');
-    map[key] = val;
+  for (let i = 1; i < rows.length; i++) {
+    const [key, value] = rows[i];
+    if (key) map[key] = value;
   }
 
   const parsed = { ...DEFAULT_PREFS };
@@ -333,16 +380,17 @@ export default function SettingsPanel({
               Export Preferences
             </button>
 
-            <label className="settings-btn settings-btn--ghost" style={{ cursor: 'pointer' }}>
+            <label className="settings-btn settings-btn--ghost" htmlFor="import-prefs-input" style={{ cursor: 'pointer' }}>
               Import Preferences
-              <input
-                type="file"
-                accept=".csv"
-                style={{ display: 'none' }}
-                onChange={handleImport}
-                aria-label="Import preferences CSV"
-              />
             </label>
+            <input
+              id="import-prefs-input"
+              type="file"
+              accept=".csv,text/csv,text/plain,application/octet-stream,text/comma-separated-values,application/csv"
+              style={{ position: 'fixed', top: '-100em', opacity: 0 }}
+              onChange={handleImport}
+              aria-label="Import preferences CSV"
+            />
           </section>
 
           {/* ── ABOUT ── */}
